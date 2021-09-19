@@ -1,21 +1,25 @@
 #'---
 #' title: "Neurotoxicity associated with high fluoride levels"
 #' date: "`r Sys.Date()`"
+#' always_allow_html: true
 #' ---
 
-#+ knitr::opts_chunk$set(echo = FALSE)
+#+ echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE
+
+knitr::opts_chunk$set(echo = FALSE)
 
 here::here("fluoride-work")
-
+devtools::install_github("julianflowers/myScrapers")
 library(myScrapers)
 library(fulltext)
 library(tidypmc)
 library(tidyverse)
 library(jsonlite)
+library(kableExtra)
 
-## fluoride systematic reviews
+#' ## fluoride systematic reviews
 
-fl_sr <- get_ss_data(search = "fluoride systematic review", n = 100)
+fl_sr <- get_ss_data(search = "fluoride AND systematic review", n = 100)
 
 fl_cit_imp <- fl_sr$data %>%
   select(paperId, title, influentialCitationCount, externalIds.PubMedCentral, externalIds.DOI) %>%
@@ -39,7 +43,7 @@ tables$`Table 2` %>%
 text %>%
   gt::gt()
 
-## get citations and refs using semantic scholar graph api
+#' ## get citations and refs using semantic scholar graph api
 
 get_ss_graph <- function(id = NULL){
   
@@ -61,9 +65,10 @@ citing_papers <- test$citations$data$citingPaper %>%
   group_by(paperId, title, venue, year, externalIds) %>%
   summarise(authors = paste(name, collapse = ", ")) 
 
-citing_papers
+citing_papers %>%
+  reactable::reactable(filterable = TRUE, sortable = TRUE, searchable = TRUE, groupBy = "venue")
 
-###
+#' ### get papers
 get_ss_paper <- function(id = NULL){
   
   uri <- "https://api.semanticscholar.org/graph/v1/paper/"
@@ -72,14 +77,18 @@ get_ss_paper <- function(id = NULL){
 }
 
 paper <- get_ss_paper("0733f5a113d4b6c59c6682534e2c5f3e56f1caa3")
+paper1 <- get_ss_paper("4511e038d09c98996d0af8439f9049c5a52e123c")
 
 paper
 
-fluoride_neurotox_1 <- tidypmc::pmc_xml(id = paste0("PMC", paper$externalIds$PubMedCentral))
+fluoride_neurotox_1 <- tidypmc::pmc_xml(id = paste0("PMC", paper1$externalIds$PubMedCentral))
 meta1 <- tidypmc::pmc_metadata(fluoride_neurotox_1)
 meta1
 tables1 <- tidypmc::pmc_table(fluoride_neurotox_1)
 
+tables1
+
 text1 <- tidypmc::pmc_text(fluoride_neurotox_1)
 
-text1
+text1 %>%
+  reactable::reactable(filterable = TRUE)
