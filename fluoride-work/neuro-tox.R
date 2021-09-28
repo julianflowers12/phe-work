@@ -7,11 +7,14 @@
 
 here::here("fluoride-work")
 
+remotes::install_github('julianflowers/myScrapers')
+
 library(myScrapers)
 library(fulltext)
 library(tidypmc)
 library(tidyverse)
 library(jsonlite)
+library(myScrapers)
 
 ## fluoride systematic reviews
 

@@ -6,6 +6,7 @@
 #+ knitr::opts_chunk$set(echo = FALSE)
 
 here::here("fluoride-work")
+remotes::install_github('julianflowers/myScrapers')
 
 library(myScrapers)
 library(fulltext)
