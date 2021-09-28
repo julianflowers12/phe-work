@@ -8,10 +8,10 @@
 
 knitr::opts_chunk$set(echo = FALSE)
 
-<<<<<<< HEAD
+
 remotes::install_github('julianflowers/myScrapers')
 
-=======
+
 here::here("fluoride-work")
 devtools::install_github("julianflowers/myScrapers")
 >>>>>>> 50ffe9e9d8f2bc0f5af85ddca48449a7954b4b9e
@@ -20,11 +20,11 @@ library(fulltext)
 library(tidypmc)
 library(tidyverse)
 library(jsonlite)
-<<<<<<< HEAD
+
 library(myScrapers)
-=======
+
 library(kableExtra)
->>>>>>> 50ffe9e9d8f2bc0f5af85ddca48449a7954b4b9e
+
 
 #' ## fluoride systematic reviews
 
