@@ -64,3 +64,6 @@ lsoa_df_long <- lsoa_df_long %>%
 
 lsoa_df_long_imd <- lsoa_df_long %>%
   left_join(lsoa_dep_imd, by = c("lsoa_code" = "FeatureCode"))
+
+lsoa_df_long_imd %>%
+  write_rds("data/lsoa_pop_imd.rds")
