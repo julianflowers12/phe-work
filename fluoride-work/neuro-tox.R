@@ -14,7 +14,7 @@ remotes::install_github('julianflowers/myScrapers')
 
 here::here("fluoride-work")
 devtools::install_github("julianflowers/myScrapers")
->>>>>>> 50ffe9e9d8f2bc0f5af85ddca48449a7954b4b9e
+
 library(myScrapers)
 library(fulltext)
 library(tidypmc)
