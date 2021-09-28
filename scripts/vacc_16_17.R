@@ -23,7 +23,8 @@ vacc_all_1 <- vacc_all %>%
   mutate(date = as.Date(date)) %>%
   left_join(vacc_age_sum) %>%
   mutate(young = newPeopleVaccinatedCompleteByVaccinationDate - daily, 
-         young1 = cumPeopleVaccinatedCompleteByVaccinationDate - tot)
+         young1 = cumPeopleVaccinatedCompleteByVaccinationDate - tot) %>%
+  tail()
 
 vacc_all_1 %>%
   ggplot(aes(date, young1)) +
