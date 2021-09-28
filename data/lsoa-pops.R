@@ -27,7 +27,7 @@ lsoa_df_long <- lsoa_df_1 %>%
   pivot_longer(names_to = "age", values_to = "population", cols = 8:ncol(.)) 
 
 lsoa_df_long %>%
-  saveRDS("lsoa_data.rds")
+  saveRDS("data/lsoa_data.rds")
 
 lsoa_0_4 <- lsoa_df_long %>%
   janitor::clean_names() %>%
@@ -39,3 +39,28 @@ lsoa_0_4 <- lsoa_df_long %>%
 lsoa_0_4 %>%
   group_by(la_name_2021_boundaries) %>%
   summarise(la_0_4 = sum(population))
+
+#### Deprivation scores
+
+lsoa_dep <- data.table::fread("https://opendatacommunities.org/downloads/cube-table?uri=http%3A%2F%2Fopendatacommunities.org%2Fdata%2Fsocietal-wellbeing%2Fimd2019%2Findices")
+
+lsoa_dep_imd <- lsoa_dep[Measurement == "Score" & `Indices of Deprivation` == "a. Index of Multiple Deprivation (IMD)",]
+
+lsoa_dep_imd %>%
+  write_rds("data/lsoa_imd.rds")
+
+
+lsoa_dep_imd %>%
+  ggplot(aes(Value)) +
+  geom_density()
+
+lsoa_dep_imd %>%
+  slice_max(Value)
+
+### join data - add 2019 IMD scores
+
+lsoa_df_long <- lsoa_df_long %>%
+  janitor::clean_names()
+
+lsoa_df_long_imd <- lsoa_df_long %>%
+  left_join(lsoa_dep_imd, by = c("lsoa_code" = "FeatureCode"))
